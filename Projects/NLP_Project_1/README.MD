@@ -39,6 +39,9 @@
  <li>Lexical Density:  number of unique words divided by the total number of words
 
 </ol>
+
+<img src="../images/NLP_GUI.png" alt="Simply Easy Learning" width="900"
+height="500">
  
  
  
