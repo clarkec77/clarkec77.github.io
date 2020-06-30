@@ -45,8 +45,9 @@ height="500">
  
 
 
- <a href="https:/clarkec77.github.io">Return Home<img border="0" alt="W3Schools" src="../images/Home.png" width="100" height="100"></a>
- 
+<H1><a href="https:/clarkec77.github.io">Return Home</a></H1>
+
+  <img border="0" alt="W3Schools" src="../images/Home.png" width="100" height="100">
 
 
 
