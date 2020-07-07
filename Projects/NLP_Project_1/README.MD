@@ -1,7 +1,7 @@
 # Natural Language Processing
 
 
-<p>Create a Python project to use various Python libraries to process unstructured text from APIs.  The goal is to create sentiment analysis of the text information and determined if the text information is negative or positive. Also, create word clouds. </p>
+<p>Create a Python project to use various Python libraries to process unstructured text from APIs.  The goal is to create sentiment analysis of the text information and determined if the text information is negative or positive. </p>
 
 
 <p color="blue"> Programming Lanuage</p>
