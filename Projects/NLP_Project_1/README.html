@@ -8,7 +8,7 @@
  
  <ul>
   <li>Python</li>
-  <li>R interface</li> 
+  
  </ul>
    
 <hr>
