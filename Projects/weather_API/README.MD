@@ -1,5 +1,7 @@
+# Weather Forecast
 
-<!DOCTYPE html>
+
+!DOCTYPE html>
 <html>
 <body>
 
