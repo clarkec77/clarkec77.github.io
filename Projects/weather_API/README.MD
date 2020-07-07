@@ -2,6 +2,7 @@
 
 
 !DOCTYPE html>
+
 <html>
 <body>
 
@@ -29,11 +30,11 @@
 <h1>Instructions</h1>
 <hr>
 <ul>
-<li>  Select one or more cities from the tree view widget GUI.     </li>
-<li>  List view widget will populate with the selections  </li>
-<li>  Click on the "Pull Forecast" button to generate a cities weather forecast.  </li>
-<li>  Below on the tab page is a data grid of the return data. </li>
-<li>  Also, there is a visualization of the return data </li>
+<li>  Select one or more cities from the treeview widget GUI.     </li>
+<li>  ListView widget  populate with the selections  </li>
+<li>  Click on the "Pull Forecast" button to generate cities weather forecast.  </li>
+<li>  Below on the tabpage is a data grid of the return data. </li>
+<li>  Second tabpage  display visualization of the return data </li>
 
 </ul>
 
