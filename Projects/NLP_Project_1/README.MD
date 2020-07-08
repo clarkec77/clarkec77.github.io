@@ -45,7 +45,7 @@ height="500">
  
 
 
-<H1><a href="https:/clarkec77.github.io">Return Home</a></H1>
+<H1><a href="https:/clarkec77.github.io/index.html">Return Home</a></H1>
 
   <img border="0" alt="W3Schools" src="../images/Home.png" width="100" height="100">
 
