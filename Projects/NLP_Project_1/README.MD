@@ -1,7 +1,10 @@
 # Natural Language Processing
 
 
-<p>Create a Python project to use various Python libraries to process unstructured text from APIs.  The goal is to create sentiment analysis of the text information and determined if the text information is negative or positive. </p>
+<h1>Natural Language Processing</h1>
+
+
+<p>Create a Python project to use various Python libraries to process unstructured text from APIs.  The goal is to create senitimental analys of the text information and determined if the text information is negative or positive. Also, create word clouds. </p>
 
 
 <p color="blue"> Programming Lanuage</p>
@@ -19,13 +22,13 @@
 
   <ol>
  
-  <LI>remove stop word</li>
-  <LI>lowercase all text</li>
-  <LI>remove stop words</li>
-  <LI>remove special characters</li>
-  <LI>remove punctuation</li>
-  <LI>remove common words</li>
-   <LI>remove rare words</li>
+  <LI>Remove stop word</li>
+  <LI>Lowercase all text</li>
+  <LI>Remove stop words</li>
+  <LI>Remove special characters</li>
+  <LI>Remove punctuation</li>
+  <LI>Remove common words</li>
+   <LI>Remove rare words</li>
    </ol> 
 
 
@@ -34,20 +37,38 @@
 
  <ol> 
  <li>Word Frequency: number of words 
- <li>Word Length: average length of individual words in a text
  <li>Lexical Diversity: number of unique words used 
- <li>Lexical Density:  number of unique words divided by the total number of words
+<li>Part of Speech</li>
 
 </ol>
+ 
+ 
+<H1>GUI Interface</H1>
 
 <img src="../images/NLP_GUI2.png" alt="Simply Easy Learning" width="900"
 height="500">
  
 
+<hr>
+<h1>Instructions</h1>
 
-<H1><a href="https:/clarkec77.github.io/index.html">Return Home</a></H1>
+<ol style="list-style-type:upper-roman">
+
+  <li>Enter search word in textbox </li>
+  <li>Enter search date (optional)</li>
+  <li>Click “run program” button to pull information from  twitter API< /li>
+  <li>Click “process and clean text” button to start cleaning of data</li>
+  <li>Text box below will populate with unstructured data </li>
+  <li>Text box near left bottom populate with words part of speech </li>
+  <li>Text box near right bottom populate with top twenty words of the population</li>
+  <li>Chart shows the frequency of words </li>
+
+
+</ol>
+
+
+
+<H1><a href="https:/clarkec77.github.io">Return Home</a></H1>
 
   <img border="0" alt="W3Schools" src="../images/Home.png" width="100" height="100">
-
-
 
