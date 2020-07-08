@@ -67,8 +67,5 @@ height="500">
 </ol>
 
 
-
-<H1><a href="https:/clarkec77.github.io">Return Home</a></H1>
-
-  <img border="0" alt="W3Schools" src="../images/Home.png" width="100" height="100">
+<input  style="width:160;height:124; background-color:aqua"  type="button" onclick="location.href='https:/clarkec77.github.io';" value="Go  Back To HomePage" />
 
