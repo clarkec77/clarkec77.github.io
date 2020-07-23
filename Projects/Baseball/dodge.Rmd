@@ -1,0 +1,164 @@
+---
+title: "Charles Clarke"
+Date: "3/30/2020"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(plotly)
+library(ggplot2)
+```
+
+## R Markdown
+For this week???s assignment we're going to use Dodgers Major League Baseball data from 2012. The data file you will be using is contained in the dodgers.csv file. I would like you to determine what night would be the best to run a marketing promotion to increase attendance. It is up to you if you decide to recommend a specific date (Jan 1, 2020) or if you want to recommend a day of the week (Tuesdays) or Month and day of the week (July Tuesdays). You will want to use TRAIN. As a reminder, the training set is the data we fit our model on. Use a combination of R and Python to accomplish this assignment. It is important to remember, there will be lots of ways to solve this problem. Explain your thought process and how you used various techniques to come up with your recommendation. From this data, at a minimum, you should be able to demonstrate the following:
+
+Box plots
+
+Scatter plots
+
+Regression Model
+
+### Read Data from CSV file
+
+
+```{r }
+MyData <- read.csv("dodgers.csv", header=TRUE, sep=",")
+```
+
+
+#Check for any NA data values
+
+```{r}
+
+anyNA(MyData)
+```
+
+## Convert  string variqbles to integer
+
+```{r}
+## Convert  string variqbles to integer
+
+MyData$attend <- as.integer(MyData$attend)
+MyData$temp <- as.integer(MyData$temp)
+MyData$day <- as.integer(MyData$day)
+
+
+MyData$day_of_week<- as.factor(MyData$day_of_week)
+MyData$day_night <- as.factor(MyData$day_night)
+MyData$skies <- as.factor(MyData$skies)
+```
+
+
+## Dataframe structure
+
+
+
+```{r}
+
+str (MyData)
+```
+### Print summary
+```{r pressure, echo=FALSE}
+summary(MyData)
+
+
+```
+
+```{r}
+library(corrplot)
+anyNA(MyData)
+
+
+```
+
+### Print  Histogram for attendance. Distribution of attendance and frequencies.
+```{R}
+
+hist(MyData$attend,
+main = "Histogram for Attendance", xlab = "Number at attendance",
+ylab = "Frequency")
+
+```
+
+
+### Look at correlation between attendance and  temperature
+```{r}
+ cor(MyData$attend,MyData$temp)
+```
+
+## Plot scatter. Attendance vs  Temperature.
+
+```{r}
+
+ggplot(MyData, aes(y = MyData$attend, x= MyData$temp)) + xlab("Temperture") + ylab("Attendance")+
+         geom_point(size=2, shape=23)
+  #geom_bar( stat = "identity") 
+        
+
+
+```
+###Multivariate Plots
+
+```{r}
+
+featurePlot(x=MyData$attend, y=MyData$temp, plot="ellipse")
+
+```
+### Box plots of Attendance vs Day Of Week
+
+Monday has two outlieners. Monday showing one day with hight attendance and low attendance occurances.
+
+Tuesday has the highest attendance number. Attendance number above the mean value.
+
+```{r  , fig.height = 6, fig.width = 15}
+plot(MyData$day_of_week, MyData$attend,
+main = "Attendance vs Day of Week",
+ylab = "Attendance number",
+xlab = "Day of Week")
+```
+### split data for training and testing 
+
+```{r}
+samp_size = createDataPartition(MyData$attend,p=.75,list = FALSE)
+#smp_size <- floor(0.75 * nrow(MyData))
+
+
+
+training <-MyData[samp_size, ]
+testing <- MyData[-samp_size, ]
+```
+#Print the training and testing dataset after the split
+
+```{r}
+print("complete dataset -->")
+dim(MyData)
+print ("Train dataset ---> ")
+dim(training)
+print ("test dataset ---> ")
+dim(testing)
+```
+### Run linear regression model and print summary
+
+```{r}
+linear_model<-train(attend ~ factor(day_of_week)+factor(day_night), data = training)
+
+print(summary(linear_model))
+
+```
+
+
+### Linear Regression. Print model values
+
+```{r}
+print(linear_model )  # 
+
+
+```
+
+
+
