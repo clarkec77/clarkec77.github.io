@@ -1,0 +1,449 @@
+---
+title: "walmart"
+author: "Charles Clarke"
+date: "5/11/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=4) 
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+install.packages("corrplot")
+install.packages("ellipse")
+
+```
+```{r}
+library(recommenderlab)
+library(reshape2)
+library(ggplot2)
+library(DBI)
+library(RSQLite)
+library(dplyr)
+library(varhandle)
+library(ggplot2)
+library(caret)
+library(skimr)
+```
+
+
+
+
+```{r}
+
+MyData_store_nbr_weather <- read.csv("key.csv", header=TRUE, sep=",")
+MyData_weather <- read.csv("weather.csv", header=TRUE, sep=",")
+MyData_feature_features <- read.csv("features.csv", header=TRUE, sep=",")
+MyData_feature_train <- read.csv("train.csv", header=TRUE, sep=",")
+MyData_store_size <- read.csv("stores.csv", header=TRUE, sep=",")
+
+```
+
+```{r}
+str(MyData_weather)
+View(MyData_weather)
+```
+```{r}
+str(MyData_feature_train)
+View(MyData_feature_train)
+```
+```{r}
+str(MyData_store_nbr_weather)
+View(MyData_store_nbr_weather)
+
+```
+
+
+```{r}
+str(MyData_store_size)
+View(MyData_store_size)
+
+```
+
+```{R}
+str (MyData_weather)
+View (MyData_weather)
+```
+```{r }
+
+
+MyData_weather<-MyData_weather %>% mutate(snowfall_new = ifelse(snowfall == "M" , 0,  ifelse(trimws(snowfall) == "T" , 0, unfactor(snowfall))))
+MyData_weather<-MyData_weather %>% mutate(preciptotal_new= ifelse(preciptotal == "M" , 0,  ifelse(trimws(preciptotal) == "T" , 0, unfactor(preciptotal))))
+
+MyData_weather$station_nbr =as.numeric(MyData_weather$station_nbr  )
+MyData_weather$tmax =as.numeric(MyData_weather$tmax  )
+MyData_weather$tmin =as.numeric(MyData_weather$tmin  )
+MyData_weather$snowfall_new =as.numeric(MyData_weather$snowfall_new  )
+MyData_weather$preciptotal_new =as.numeric(MyData_weather$preciptotal_new )
+
+
+MyData_weather$month =" " 
+
+#MyData_weather <-   filter(MyData_weather, station_nbr <= 9  )
+
+MyData_weather$year <-   substr(MyData_weather$date, 1, 4) 
+MyData_weather$month <- substr(MyData_weather$date, 6, 7) 
+
+
+MyData_weather<-MyData_weather %>% mutate(month= ifelse(month == "01" ,"Jan",  ifelse(trimws(month) == "02" , "Feb", 
+                                                                              ifelse(trimws(month) == "03" , "Mar",   
+                                                                              ifelse(trimws(month) == "04" , "Apr", 
+                                                                              ifelse(trimws(month) == "05" , "May",   
+                                                                              ifelse(trimws(month) == "06" , "Jun",      
+                                                                              ifelse(trimws(month) == "07" , "Jul", 
+                                                                              ifelse(trimws(month) == "08" , "Aug",   
+                                                                              ifelse(trimws(month) == "09" , "Sep",  
+                                                                              ifelse(trimws(month) == "10" , "Oct",      
+                                                                              ifelse(trimws(month) == "11" , "Nov", 
+                                                                              ifelse(trimws(month) == "12" , "Dec",
+                                                                                     
+                                                                                    " ??")))))))))))))
+
+
+
+keeps <- c("station_nbr", "date","tmax","tmin","sunrise","sunset","codesum","month","year","preciptotal_new","snowfall_new")
+MyData_weather <-  MyData_weather[keeps]
+
+View (MyData_weather)
+
+```
+
+
+       
+```{r}
+MyData_weather[is.na(MyData_weather)] <- 0
+
+
+```
+
+
+
+```{r}
+MyData_feature_train$day_of_week =""
+MyData_feature_train$day_of_week = weekdays( as.Date(MyData_feature_train$date))
+```
+
+
+```{r}
+
+MyData_weather_combine <- merge(MyData_store_nbr_weather,MyData_weather, by =c("station_nbr"))
+MyData_weather_combine <- merge(MyData_weather_combine,MyData_store_size, by.x =c("store_nbr"),by.y =c("Store"))
+MyData_train_combine <- merge(MyData_feature_train,MyData_store_size, by.x =c("store_nbr"),by.y =c("Store"))
+MyData_train_combine <- merge(MyData_train_combine ,MyData_weather_combine, by =c("store_nbr","date"))
+
+View(MyData_train_combine )
+str(MyData_train_combine)
+
+```
+
+```{r}
+
+MyData_train_combine<-  MyData_train_combine%>% mutate(search_condition = ifelse((preciptotal_new >= 1.0) & (units>=10),1,0))
+
+
+MyData_train_combine[["snowfall_new"]][is.na(MyData_train_combine[["snowfall_new"]])] <- 0
+
+```
+
+
+```{r}
+head(MyData_train_combine)
+```
+
+
+```{r}
+
+cor_keeps <- c("station_nbr","store_nbr" ,"tmax","tmin","preciptotal_new","snowfall_new","item_nbr","units","Size.x","search_condition")
+ MyData_weather_combine_corr<-  MyData_train_combine[cor_keeps]
+source("http://www.sthda.com/upload/rquery_cormat.r")
+rquery.cormat(MyData_weather_combine_corr, type = "full")
+
+```
+```{r}
+library(skimr)
+skimmed <- skim_to_wide(MyData_weather_combine_corr)
+skimmed[, c(1:2, 3:7, 8:10)]
+
+
+```
+
+```{r}
+correlationMatrix <- cor(MyData_weather_combine_corr)
+print(correlationMatrix)
+```
+```{r}
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.5)
+# print indexes of highly correlated attributes
+print(highlyCorrelated)
+```
+```{R}
+MyData_weather_combine$month <- factor(MyData_weather_combine$month,levels = c("Jan","Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+MyData_weather_combine$year <- factor(MyData_weather_combine$year,levels = c("2012","2013","2014"))
+
+ggplot(data =MyData_weather_combine, aes(fill=Type , x=month, y=snowfall_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Snowfall / (inches measurement)") 
+```
+```{R}
+ggplot(data =MyData_weather_combine, aes(fill=year , x=month, y=snowfall_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Snowfall / (inches measurement)") 
+
+```
+```{R}
+  
+MyData_weather_combine$month <- factor(MyData_weather_combine$month,levels = c("Jan","Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+ggplot(data =MyData_weather_combine, aes(fill=station_nbr , x=month, y=snowfall_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Snowfall") 
+
+
+ 
+```
+```{r}
+MyData_weather_combine$month <- factor(MyData_weather_combine$month,levels = c("Jan","Feb", "Mar", "Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+ggplot(data =MyData_weather_combine, aes(fill=Type , x=month, y=preciptotal_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Precipitation") 
+```
+```{R}
+ggplot(data =MyData_weather_combine, aes(fill=year , x=month, y=preciptotal_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Precipitation / (inches measurement)") 
+
+```
+```{r}
+ggplot(data =MyData_weather_combine, aes(fill=station_nbr , x=month, y=preciptotal_new)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Months") + ylab("Precipitation") 
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+
+MyData_feature_train$day_of_week =""
+MyData_feature_train$day_of_week = weekdays( as.Date(MyData_feature_train$date))
+#MyData_feature_train = MyData_feature_train %>% mutate(day_of_week= as.Date( MyData_feature_train$date,format=???%d-%m-%Y"))
+
+
+
+
+View(MyData_feature_train)
+```
+
+```{R}
+linecolors <- c("#714C02", "#01587A", "#024E37")
+#fillcolors <- c("#9D6C06", "#077DAA", "#026D4E")
+fillcolors <- c("red", "blue", "green")
+ggplot(MyData_weather_combine, aes(x=MyData_weather_combine$store_nbr, y= MyData_weather_combine$Size, fill= MyData_weather_combine$Type)) +
+    geom_point(position=position_jitter(h=0.1, w=0.1),
+             shape = 21, alpha = 0.5, size = 3)  + xlab("Walmart Store Numbers") + ylab("Walmart Store Size")  +scale_color_manual(values=linecolors) +
+  scale_fill_manual(values=fillcolors) +    labs(fill = "Walmart Store Categories ")
+
+
+```    
+```{r}
+ggplot(MyData_train_combine, aes(x=MyData_train_combine$item_nbr, y= MyData_train_combine$units, color= MyData_train_combine$year)) + geom_point(position=position_jitter(h=0.1, w=0.1),shape = 1, alpha = 0.5, size = 5  )  
+     + xlab("Item number") + ylab("Number of units sold")   + scale_fill_manual(values=fillcolors) 
+# geom_point(position=position_jitter(h=0.1, w=0.1),shape = 21, alpha = 0.5, size = 3  )  geom_point(shape=4, size=2)
+```
+
+
+```{r}
+
+ggplot(MyData_train_combine, aes(x=MyData_train_combine$tmax, y= MyData_train_combine$units, color= MyData_train_combine$Type)) +
+    geom_point(shape=4)  + xlab("Temperture Max") + ylab("Walmart Number Of Units Sold (Overall Total)")   
+```
+```{r}
+
+units_sold_result<- MyData_train_combine %>%
+select(item_nbr, units, Type.x ,year) %>%
+group_by(item_nbr, Type.x,year) %>%
+summarise(units_sold= sum(units))%>%
+arrange(desc(units_sold))
+head(units_sold_result)
+```
+```{r}
+ggplot(data =units_sold_result, aes(fill=year, x=Type.x, y=units_sold_result$units_sold)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Walmart Store Types") + ylab("Number of units sold") 
+
+```
+
+
+```{r}
+
+str( MyData_train_combine)
+```
+```{r}
+MyData_train_combine$day_of_week <- factor(MyData_train_combine$day_of_week,levels = c("Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"))
+MyData_train_combine %>%
+  ggplot( aes(x=day_of_week, y=units, color=year)) +
+    geom_boxplot() +
+   
+    
+   
+    xlab("Day Of Week")+ xlab("Units sold")
+
+   
+# theme(legend.position="none", plot.title = element_text(size=11)
+#+ geom_jitter(color="black", size=0.4, alpha=0.9)
+```
+```{r}
+modelnames <- paste(names(getModelInfo()), collapse=',  ')
+modelnames
+```
+
+```{r}
+
+ggplot(data =units_sold_result, aes(fill=year, x=Type.x, y=units_sold_result$units_sold)) + 
+    geom_bar(position="stack", stat="identity")+ xlab("Walmart Store Types") + ylab("Number of units sold") 
+
+```
+```{R}
+modelnames <- paste(names(getModelInfo()), collapse=',  ')
+modelnames
+```
+
+
+```{r}
+str(MyData_train_combine)
+```
+```{r}
+MyData_weather_combine_corr_x <- MyData_weather_combine_corr[1:2000000,]
+MyData_weather_combine_corr_x$search_condition <- as.factor(MyData_weather_combine_corr_x$search_condition)
+str(MyData_weather_combine_corr_x)
+```
+```{r}
+set.seed(3456)
+ data_split <- createDataPartition( MyData_weather_combine_corr_x$search_condition,p =.75, list= FALSE)
+training <-  MyData_weather_combine_corr_x[data_split,]
+testing <-  MyData_weather_combine_corr_x[-data_split,]
+```
+
+```{r}
+str(training[, 1:8])
+
+```
+```{r}
+
+
+featurePlot(x=training[, 1:7], y=training$units, plot="density", scales=list(x=list(relation="free"), y=list(relation="free")), auto.key=list(columns=3))
+
+```
+
+```{r}
+str(training)
+```
+```{r}
+str(testing)
+```
+```{r}
+list.of.packages <- c("caret", "earth")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+```
+```{r}
+# Set the seed for reproducibility
+set.seed(100)
+
+# Train the model using randomForest and predict on the training data itself.
+model_mars = train(units~., data =training, method = "earth")
+fitted <- predict(model_mars)
+
+```
+```{r}
+lml <-train(units~., data =training, method = "lm")
+
+
+```
+```{r}
+rf <-train(units~., data =training,  method = 'glmnet' 
+                 )
+```
+```{R}
+pred <- predict(lml,testing)
+```
+```{r}
+lml$results
+```
+
+```{r}
+pred
+```
+
+```{r}
+
+fitControl <- trainControl(
+                           method = "repeatedcv",
+                           number = 3)
+
+
+set.seed(825)
+gbmFit1 <- train(units ~ ., data = training, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 verbose = FALSE)
+gbmFit1
+```
+
+```{r}
+
+gbmFit1$results
+
+```
+
+```{r}
+
+
+
+
+lasso<-train(units ~ ., data = training, 
+                 data = training,
+                 method = 'glmnet'
+           
+               ) 
+
+ridge<-train(y = y_train,
+                 x = X_train,
+                 method = 'glmnet', 
+                 tuneGrid = expand.grid(alpha = 0, lambda = 1)
+           
+               ) 
+
+```
+
+yes
+yes
+1
+
+
+```{r}
+
+
+lml$results
+```
+
+```{r}
+results <- resamples(list(LVQ=lml, GBM=gbmFit1))
+# summarize the distributions
+summary(results)
+# boxplots of results
+bwplot(results)
+# dot plots of results
+dotplot(results)
+
+```
+
+```{r}
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
