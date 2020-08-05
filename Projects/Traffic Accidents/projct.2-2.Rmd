@@ -90,7 +90,7 @@ library(lubridate)
 library(ggplot2)
 
 MyData <- read.csv(file="Traffic_Crash_Reports__CPD_.csv", header=TRUE, sep=",")
-ggmap::register_google(key = "AIzaSyC1TTjTrS_n35G4dqROiHpSvQ5J3P1DqV8")
+ggmap::register_google(key = "?????????????")
 
 ```
 
