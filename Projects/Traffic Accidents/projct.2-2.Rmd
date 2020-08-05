@@ -74,13 +74,6 @@ Bar
 histogram
 line
 
-##What do you not know how to do right now that you need to learn to answer your questions?
-
-I will need to learn how to plot the points on an image of the city. Something similar to Google Earth, but I am not sure I will have time to complete this task.
-Do you plan on incorporating any machine learning techniques to answer your research questions? Explain.
-Create a multilinear model to predict day of week crashes based on the following independent variables:  age, gender, LIGHTCONDITIONSPRIMARY.
- (dayofweek~ age +  gender + LIGHTCONDITIONSPRIMARY)
-
 
 
 ```{r}
