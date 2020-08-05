@@ -1,0 +1,282 @@
+---
+title: 'Discussion: Final Project Analysis'
+author: "Charles clarke"
+date: "8/8/2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+
+#Summarize the problem statement you addressed.
+
+ The insurance companies have many indicators that are used to determine driver risk factors. Software algorithms use key indicators of a driver risk of filing a claim against his/her policy. Some of the indicators used by insurance companies are age, address, gender, driving history, credit report, marriage status. This research is going to explore if there are any validations in these indicators.
+
+
+#Summarize how you addressed this problem statement (the data used and the methodology employed).
+
+ Query the dataset into smaller subsets that are used to  display plots  and indicate attributes that are high risk to the insurance policy. 
+
+https://data.cincinnati-oh.gov/Safer-Streets/Traffic-Crash-Reports-CPD-/rvmt-pkmq/data
+
+##Summarize the interesting insights that your analysis provided.
+
+ One insight shown in the data is that the 31-40 age accident occurrences increase. 
+
+##Summarize the implications to the consumer (target audience) of your analysis.
+
+The insurance companies are the target audience. The data does support that young males are more likely to be involved in an accident.
+
+##Discuss the limitations of your analysis and how you, or someone else, could improve or build on it.
+
+ Cluster analysis will help in determining if there is a relationship between the variables. Linear regression study that goes more deep at examining the data should reveal more info.The percentage calculation for the pie chart is incorrect.
+
+##In addition, submit your completed Project using R Markdown or provide a link to where it can also be downloaded from and/or viewed.
+
+
+
+###Data
+https://data.cincinnati-oh.gov/Safer-Streets/Traffic-Crash-Reports-CPD-/rvmt-pkmq/data
+
+##Data importing and cleaning steps are explained in the text and in the DataCamp exercises.(Tell me why you are doing the data cleaning activities that you perform). Follow a logical process.
+
+Remove all columns with NA, Unknown , blank values.  This will prevent bias and incorrect analysis of the data.  
+With a clean dataset, show what the final data set looks like. However, do not print off a data frame with 200+ rows; show me the data in the most condensed form possible.
+
+
+##What do you not know how to do right now that you need to learn to import and cleanup your dataset?
+
+I need to learn how to filter out blank values in the dataset.  I also need to look into duplication in record rows.
+Discuss how you plan to uncover new information in the data that is not self-evident.
+Create plots and a correlation matrix of the variables in the dataset.
+What are different ways you could look at this data to answer the questions you want to answer?
+Crashes by 
+Gender
+AGE
+ZIP CODES
+Weather or road condition
+
+##Do you plan to slice and dice the data in different ways, create new variables, or join separate data frames to create new summary information? Explain.
+
+Convert the datetime  format  of DATECRASHREPORTED variable to 24 hour  format, and minute values. 
+Filter out the last full three years from the dataset. Dataset data goes back to year 2013. I will filter dataset DATECRASHREPORTED variable on years 2016,2017 and 2018. This will provide three full years of data.
+
+
+##How could you summarize your data to answer key questions?
+
+Correlation matrix
+summmary()
+Plots
+What types of plots and tables will help you to illustrate the findings to your questions? Ensure that all graph plots have axis titles, legend if necessary, scales are appropriate, appropriate geoms used, etc.).
+Scatter
+Bar 
+histogram
+line
+
+##What do you not know how to do right now that you need to learn to answer your questions?
+
+I will need to learn how to plot the points on an image of the city. Something similar to Google Earth, but I am not sure I will have time to complete this task.
+Do you plan on incorporating any machine learning techniques to answer your research questions? Explain.
+Create a multilinear model to predict day of week crashes based on the following independent variables:  age, gender, LIGHTCONDITIONSPRIMARY.
+ (dayofweek~ age +  gender + LIGHTCONDITIONSPRIMARY)
+
+
+
+```{r}
+library(ggmap)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+
+MyData <- read.csv(file="Traffic_Crash_Reports__CPD_.csv", header=TRUE, sep=",")
+ggmap::register_google(key = "AIzaSyC1TTjTrS_n35G4dqROiHpSvQ5J3P1DqV8")
+
+```
+
+
+
+```{r}
+
+##Clean data function****************************************
+function_add_new_variables<- function(MyDATA)
+{
+ 
+
+
+  MyData<-subset(MyData,       select=-c(ADDRESS_X,COMMUNITY_COUNCIL_NEIGHBORHOOD,CPD_NEIGHBORHOOD,INSTANCEID,LOCALREPORTNO,SNA_NEIGHBORHOOD))
+  
+MyData$AGE<-replace(MyData$AGE,MyData$AGE == "UNKNOWN",NA)
+MyData$GENDER<-replace(MyData$GENDER,MyData$GENDER == "UNKNOWN",NA)
+  
+  
+   MyData_filter <- MyData %>% 
+   
+       mutate(
+              crash_severity_id = as.integer(
+                ifelse (MyData$CRASHSEVERITY == "2 - SERIOUS INJURY SUSPECTED", 22, 
+                      ifelse (MyData$CRASHSEVERITY == "5 - PROPERTY DAMAGE ONLY", 3,                         
+                      ifelse (MyData$CRASHSEVERITY == "4 - INJURY POSSIBLE", 4, 
+                      ifelse (MyData$CRASHSEVERITY == "3 - MINOR INJURY SUSPECTED",                            33,MyData$CRASHSEVERITYID)))))
+              )
+             
+           
+   MyData_filter <- MyData_filter %>%         mutate(  crash_age_group_id = as.integer(
+                ifelse (MyData_filter$AGE == "UNDER 18", 1,                                                    ifelse (MyData_filter$AGE == "18-25",2, 
+                ifelse (MyData_filter$AGE == "26-30",3,  
+                ifelse (MyData_filter$AGE == "31-40", 4,                                                       ifelse (MyData_filter$AGE == "41-50",5, 
+                ifelse (MyData_filter$AGE == "51-60",6 ,                                                       ifelse (MyData_filter$AGE == "61-70",7,
+                ifelse (MyData_filter$AGE == "OVER 70",8 ,                                                                      0))) ))) )))  
+                )
+                 
+  
+     MyData_filter <- MyData_filter %>%         mutate(  crash_male_female_id = as.integer(
+                ifelse (MyData_filter$GENDER == "M - MALE", 0,1 )                                                 
+                  
+                ))
+   
+   MyData_filter <- MyData_filter %>%         mutate(  GENDER = as.character(
+                ifelse (MyData_filter$GENDER == "F - FEMALE", "FEMALE"  ,                                               
+                  ifelse (MyData_filter$GENDER == "FEMALE", "FEMALE"  ,
+                    ifelse (MyData_filter$GENDER == "M - MALE", "MALE", 
+                      ifelse (MyData_filter$GENDER == "MALE", "MALE",""      
+                ))))
+   )
+   )
+                      
+       MyData_filter <- MyData_filter %>%         mutate(  GENDER_COLOR = as.character(
+                ifelse (MyData_filter$GENDER == "FEMALE", "red" , "blue")  
+       )
+       )
+     
+    
+      MyData_filter <- MyData_filter %>%filter (LATITUDE_X != "")%>%filter(LONGITUDE_X != "")%>% filter(AGE != "")
+      
+  MyData_filter<-na.omit(MyData_filter)
+  MyData_filter$Year <- as.Date(MyData_filter$CRASHDATE,"%d/%m/%Y") 
+  
+  MyData_filter<-MyData_filter %>% 
+  filter( between(Year, as.Date("2013-01-01"), as.Date("2019-01-10")))%>% filter(AGE != "UNKNOWN" )
+  
+  
+  
+ return( MyData_filter)
+}
+
+
+
+
+```
+
+```{r}
+
+## look at clean dataset*************************
+MyData_filter<- function_add_new_variables(MyData)
+
+#head(MyData_filter,100)
+
+class(MyData_filter$Year)
+#summary(MyData_filter)
+
+#glimpse(MyData_filter)
+
+
+
+## create function to create google maps
+google_maps<-function ()
+{
+
+map <- get_map("Cincinnati, Ohio", zoom = 11)
+
+
+return(map)
+}
+
+
+
+## Query data for  plots*********************************
+summary_function<-function()
+{
+  
+  summary_day_of_week_injures_name<-MyData_filter%>% filter(GENDER !="")%>%group_by(DAYOFWEEK,AGE,GENDER,INJURIES)%>% summarise(summary_count = n())
+  
+  summary_gender_injures_percentage<-MyData_filter%>% filter(GENDER !="")%>%group_by(AGE,GENDER,INJURIES)%>% summarise(summary_count = n())
+  summary_gender_age<-MyData_filter%>% filter(GENDER !="")%>%group_by(AGE,GENDER)%>% summarise(summary_count = n())%>%mutate(percent = (summary_count/sum(summary_count))*100)
+  
+  summary_crashlocation<-MyData_filter%>%filter(CRASHLOCATION !="")%>%group_by(CRASHLOCATION)%>%summarise(count_of_crashes = n())
+                                                                                                    
+  return(list(summary_day_of_week_injures_name=summary_day_of_week_injures_name,summary_gender_injures_percentage=summary_gender_injures_percentage,summary_gender_age=summary_gender_age,summary_crashlocation = summary_crashlocation))
+  
+}
+
+
+
+
+
+### creat plots
+
+map<-google_maps()
+attach(summary_function())
+
+
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(AGE =="18-25"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color= "red" , size=5, alpha=0.5)+ggtitle('Crashes By 18-25 Age Group')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(AGE =="OVER 70"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="red", size=3, alpha=0.5)+ggtitle('Crashes By Over 70 Age Group')
+
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(AGE =="UNDER 18"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="red", size=3, alpha=0.5)+ggtitle('Crashes By Under 18 Age Group')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(AGE =="31-40"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="red", size=3, alpha=0.5)+ggtitle('Crashes By 31-40 Group')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(WEATHER =="6 - SNOW"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="green", size=3, alpha=0.5)+ggtitle('Weather Condition Snow')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(WEATHER =="4 - RAIN"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="green", size=3, alpha=0.5)+ggtitle('Weather Condition Rain')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(WEATHER =="2 - CLOUDY"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="green", size=3, alpha=0.5)+ggtitle('Weather Condition Cloudy')
+
+map%>% ggmap() + geom_point(data = MyData_filter%>%filter(WEATHER =="1 - CLEAR"), aes(x = as.numeric(LONGITUDE_X) , y =as.numeric(LATITUDE_X) ), color="green", size=3, alpha=0.5)+ggtitle('Weather Condition Clear')
+
+ggplot(data = MyData_filter) +
+  geom_bar(mapping = aes(x = MyData_filter$AGE))
+
+
+ggplot(summary_day_of_week_injures_name, aes(x= DAYOFWEEK, y= summary_count, fill = AGE, color=GENDER, shape=INJURIES)) + geom_point() + scale_shape_manual(values=seq(0,15))
+
+ggplot(summary_gender_injures_percentage, aes(x= AGE, y= summary_count,  color=GENDER, shape=INJURIES)) + geom_point() + scale_shape_manual(values=seq(0,15))
+
+pie = ggplot(summary_gender_age%>%filter(GENDER=="FEMALE"), aes(x="FEMALE", y=percent, fill=AGE)) + geom_bar(stat="identity", width=1) +coord_polar("y", start=0) + geom_text(aes(label =round(percent,2) ), position = position_stack(vjust = 0.9))
+pie
+pie = ggplot(summary_gender_age%>%filter(GENDER=="MALE"), aes(x="MALE", y=percent, fill=AGE)) + geom_bar(stat="identity", width=1) +coord_polar("y", start=0) + geom_text(aes(label =round(percent,2) ), position = position_stack(vjust = 0.9))
+pie
+summary_gender_age
+ggplot( data = summary_gender_age, aes((summary_count)))+ geom_density(aes(fill =factor(AGE), alpha=.095))
+ggplot(aes(reorder(summary_crashlocation$CRASHLOCATION,summary_crashlocation$count_of_crashes), y =summary_crashlocation$count_of_crashes), data = summary_crashlocation , colors=factor(summary_crashlocation$CRASHLOCATION)) +geom_bar(stat = "identity")+coord_flip() +
+geom_text(aes(label = summary_crashlocation$count_of_crashes),  data = summary_crashlocation, hjust = -.1, size = 1.5)+
+xlab('Crash Locations') +  ylab('Number of Occurrences') +  ggtitle('Location of Crashes')
+
+
+
+
+
+### lINEAR ***********************************
+fit1 <- lm(MyData_filter$crash_severity_id ~ MyData_filter$crash_age_group_id + MyData_filter$crash_male_female_id + MyData_filter$WEATHER + MyData_filter$INJURIES, MyData_filter)
+
+fit2 <- lm(MyData_filter$crash_severity_id ~  MyData_filter$crash_age_group_id +MyData_filter$crash_male_female_id + MyData_filter$INJURIES  )
+
+coef(fit2)
+
+summary(fit1)
+summary(fit2)
+fit2_resid<-resid(fit2)
+fit2_fitted<-fitted(fit2)
+layout(matrix(1:4,2,2))
+plot(fit2)
+
+
+
+
+anova(fit1, fit2)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
