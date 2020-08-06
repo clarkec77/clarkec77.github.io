@@ -1,3 +1,27 @@
 
 <!DOCTYPE html>
 
+<html>
+<body>
+
+
+ <p></p>   
+<h3> Plot the different distribution of tickets</h3>
+<img src="../images/Traffic Violation/bar chart.png" alt="Trulli" width="500" height="333">
+<h3> Determine if the day of week a contributing factors in tickeing</h3>
+<img src="../images/Traffic Violation/bar chart day of week.png" alt="Trulli" width="500" height="333">
+<h3>Varies Plots</h3>
+<img src="../images/Traffic Violation/varies charts.png" alt="Trulli" width="500" height="333">
+<h3>Confussion Matrix</h3>
+<img src="../images/Traffic Violation/Confussion Matrix.png" alt="Trulli" width="500" height="333">
+<h3>plotting the true positive rate against the false positive rate at various threshold settings</h3>
+<img src="../images/Traffic Violation/ROC Chart.png" alt="Trulli" width="500" height="333">
+
+
+
+
+<h1></h1>
+<input  style="width:160;height:124; background-color:aqua"  type="button" onclick="location.href='https:/clarkec77.github.io';" value="Go  Back To HomePage" />
+
+</body>
+</html>
