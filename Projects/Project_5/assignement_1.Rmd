@@ -1,0 +1,119 @@
+---
+title: "Charles Clarke Assignment 1"
+output:
+  word_document: default
+  pdf_document: default
+  html_notebook: default
+---
+
+
+### Import libaries
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(plotly)
+library(ggplot2)
+```
+
+
+
+
+
+## Read data from CSV file
+
+```{r}
+MyData <- read.csv(file="data/bls-jobs-by-industry-category-1.csv", header=TRUE, sep=",")
+
+```
+
+### Print dataset data values.  Output 3 rows of data
+
+```{r}
+head(MyData,3)
+
+```
+
+###  Create new dataframe  and Load the cormat functions. The larger and darker the circle indicates strong correlations between the variables
+
+```{r}
+
+df_new <- data.frame(MyData$Total.Jobs..private.and.government. , MyData$Private.Sector..total., MyData$Mining..Logging.and.Construction, MyData$Year)
+source("http://www.sthda.com/upload/rquery_cormat.r")
+rquery.cormat(df_new,type="full")
+
+```
+
+```{r}
+
+
+
+```
+
+
+### Plot Histogram of data.
+
+```{r}
+h<-hist(df_new$MyData.Total.Jobs..private.and.government., breaks=10, col="red", xlab="Total Jobs Private and Government", 
+   main="Total private and government jobs")
+
+```
+
+### Plot bar chart of data
+
+
+```{r}
+
+barplot(df_new$MyData.Private.Sector..total.,
+main = "Private Sector",
+ylab = "Cost",
+xlab = "Year",
+names.arg = MyData$Year,
+col = "darkred",
+horiz = FALSE)
+
+
+
+```
+
+
+### Print crosstab of data  (private and government)   by (year)
+
+```{r}
+
+### cross table
+source("http://pcwww.liv.ac.uk/~william/R/crosstab.r")
+report = crosstab(df_new,row.vars ="MyData.Year", type = "f")
+print(report)
+```
+
+
+
+
+
+
+### Plot scatter plot of data
+
+```{r}
+
+plot(MyData$Total.Jobs..private.and.government,MyData$Month)
+```
+
+
+
+##  structure of the dataset
+
+```{r}
+str(MyData)
+
+```
+
+### Display summary of dataset
+
+```{r}
+summary(MyData)
+```
+
+
+
+
