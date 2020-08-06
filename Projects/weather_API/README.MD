@@ -1,7 +1,7 @@
 # Weather Forecast
 
 
-!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 <body>
@@ -25,7 +25,14 @@
 <h2></h2>
   <h2> Weather Visualization Tool </h2>  
 
-<img src="../images/weather_GUI.png" alt="Trulli" width="800" height="533">
+<h3>Main Screen</h3>
+<img src="../images/weather_api/main_scren_weather_api_empty.png" alt="Trulli" width="800" height="533">
+<h3>Main Screen after query of weather query pull of data</h3>
+<img src="../images/weather_api/main_screen_weather_api.png" alt="Trulli" width="800" height="533">
+<h3>Scatter Plot of data</h3>
+<img src="../images/weather_api/scatter_weather_api.png" alt="Trulli" width="800" height="533">
+<h3>Visual Plot of Linear Model </h3>
+<img src="../images/weather_api/linear_weather_api.png" alt="Trulli" width="800" height="533">
 
 <h1>Instructions</h1>
 <hr>
@@ -34,7 +41,7 @@
 <li>  ListView widget  populate with the selections  </li>
 <li>  Click on the "Pull Forecast" button to generate cities weather forecast.  </li>
 <li>  Below on the tabpage is a data grid of the return data. </li>
-<li>  Second tabpage  display visualization of the return data </li>
+<li>  Second tabpage display visualization of the return data </li>
 
 </ul>
 
