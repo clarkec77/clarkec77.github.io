@@ -5,6 +5,20 @@
 <body>
 
 <h2>Traffic Accidents</h2>
+
+<h3>Data set ---> url https://data.cincinnati-oh.gov/Safer-Streets/Traffic-Crash-Reports-CPD-/rvmt-pkmq/data </h3>
+
+
+<lu> <h3>Required R Packages</h3>
+<li>library(ggmap)</li>
+<li>library(dplyr)</li>
+<li>library(lubridate)</li>
+<li>library(ggplot2)</li>
+
+</lu>
+
+    <p> The project demonstrates the power of using visualization to reveal hidden information that contributed to traffic accidents. </p>
+
 <img src="../images/Traffic Accidents/age under 18 google map.png" alt="Trulli" width="500" height="333">
 <img src="../images/Traffic Accidents/age 18 to 25 google map.png" alt="Trulli" width="500" height="333">
 <img src="../images/Traffic Accidents/bar.png" alt="Trulli" width="500" height="333">
@@ -18,3 +32,4 @@
 
 </body>
 </html>
+
