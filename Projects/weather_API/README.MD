@@ -27,12 +27,12 @@
 
 <h3>Main Screen</h3>
 <img src="../images/weather_api/main_scren_weather_api_empty.png" alt="Trulli" width="800" height="533">
-<h3>Main Screen after query of weather query pull of data</h3>
+<h3>Main Screen after query of weather data</h3>
 <img src="../images/weather_api/main_screen_weather_api.png" alt="Trulli" width="800" height="533">
 <h3>Scatter Plot of data</h3>
 <img src="../images/weather_api/scatter_weather_api.png" alt="Trulli" width="800" height="533">
 <h3>Visual Plot of Linear Model </h3>
-<img src="../images/weather_api/linear_weather_api.png" alt="Trulli" width="800" height="533">
+<img src="../images/weather_api/model_linear.png" alt="Trulli" width="800" height="533">
 
 <h1>Instructions</h1>
 <hr>
