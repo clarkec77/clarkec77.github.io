@@ -20,6 +20,8 @@ library(ggplot2)
 
 
 
+
+
 ## Read data from CSV file
 
 ```{r}
@@ -27,11 +29,38 @@ MyData <- read.csv(file="data/bls-jobs-by-industry-category-1.csv", header=TRUE,
 
 ```
 
+```{r}
+glimpse(MyData)
+
+```
+
+### Display summary of dataset
+```{r}
+summary(MyData)
+```
+##  structure of the dataset
+```{r}
+str(MyData)
+
+```
 ### Print dataset data values.  Output 3 rows of data
 
 ```{r}
 head(MyData,3)
 
+```
+```{r}
+
+  
+  
+  
+MyData  %>% 
+group_by(Year)  %>% 
+summarize(Total_Jobs = sum(Total.Jobs..private.and.government.))  %>% 
+ggplot(aes(Year,Total_Jobs)) + geom_line() +
+stat_smooth(method = "lm", color = "red", linetype="dotted") +
+labs(title = "Total Jobs each Year",
+    subtitle = "With a regression line fitting the Total Jobs")
 ```
 
 ###  Create new dataframe  and Load the cormat functions. The larger and darker the circle indicates strong correlations between the variables
@@ -44,11 +73,6 @@ rquery.cormat(df_new,type="full")
 
 ```
 
-```{r}
-
-
-
-```
 
 
 ### Plot Histogram of data.
@@ -75,6 +99,22 @@ horiz = FALSE)
 
 
 ```
+```{r}
+
+barplot(df_new$MyData.Total.Jobs..private.and.government.,
+main = "Total Private and Government Jobs",
+ylab = "Cost",
+xlab = "Year",
+names.arg = MyData$Year,
+col = "darkred",
+horiz = FALSE)
+
+
+
+```
+
+
+
 
 
 ### Print crosstab of data  (private and government)   by (year)
@@ -96,23 +136,18 @@ print(report)
 
 ```{r}
 
-plot(MyData$Total.Jobs..private.and.government,MyData$Month)
+plot(MyData$Total.Jobs..private.and.government,MyData$Year)
 ```
 
 
 
-##  structure of the dataset
 
-```{r}
-str(MyData)
 
-```
 
-### Display summary of dataset
 
-```{r}
-summary(MyData)
-```
+
+
+
 
 
 

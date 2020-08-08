@@ -4,15 +4,17 @@
 <body>
 
     
-   
+   <h3>Required R Packages</h3>
     
-    <lu> <h3>Required R Packages</h3>
+    <lu>
         <li> library(plotly)</li>
         <li>library(ggplot2)</li> 
+
         </lu>
+
 <p>Datasource ---> file bls-jobs-by-industry-category-1.csv </p>
 
-<h3>Total Goverment and Private Sector jobs </h3>
+<h3>Total Government and Private Sector jobs </h3>
 <h4> Bar chart shows the growth and decline of jobs  </h4>
 <img src="../images/Jobs/Barchart.png" alt="Trulli" width="500" height="333">
 <h4> Histogram Chart</h4>
