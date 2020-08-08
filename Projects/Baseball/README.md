@@ -1,4 +1,6 @@
 
+<!DOCTYPE html>
+
 
 <html>
 <body>
@@ -57,3 +59,4 @@ Use Python to help determined the best  attendance promotion opportunity based o
 
 </body>
 </html>
+
