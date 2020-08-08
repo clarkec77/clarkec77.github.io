@@ -1,10 +1,92 @@
-
-<!DOCTYPE html>
 <html>
 <body>
 
-<h2>Work In Progress</h2>
-<img src="images/chatbot/tab1png" alt="Trulli" width="500" height="333">
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+    <lu> <h3>Required R Packages</h3>
+        <li>from nltk.stem import WordNetLemmatizer</li>
+        <li>lemmatizer = WordNetLemmatizer()</li>
+        <li>import pickle</li>
+        <li>import numpy as np</li>
+        <li>from keras.models import load_model</li>
+        <li>import json</li>
+        <li>import pickle</li>
+        <li>import random</li>
+        <li>from keras.models import Sequential</li>
+        <li>import from keras.layers import Dense, Activation, Dropout</li>
+        <li>from keras.optimizers import SGD</li>
+        <li>import random</li>
+        <li>from PyQt5 import QtWidgets, uic,QtCore</li>
+        <li>import sys</li>
+
+        
+
+       
+        
+
+
+        
+        </lu>
+
+
+
+<h2>Chatbot</h2>
+<h3> Main screen (First tab)   </h3>
+<img src="../images/chatbot/tab1.png" alt="Trulli" width="500" height="333">
+<h3> User and chatbot interaction screen(Second tab) </h3>
+<img src="../images/chatbot/tab2.png" alt="Trulli" width="500" height="333">
+<h3>Example of user and chatbot interaction. Data table keep a history of the chats between the chatbot and user. </h3>
+<img src="../images/chatbot/chat_conv.png" alt="Trulli" width="500" height="333">
+
+
+
+<h1>Objective:</h1>
+<lu>
+
+<li> Program read in a JSON file that has data formatted as classes and related value.</li>
+<li> The data is clean: lower case, remove duplication, common words, etc.</li>
+<li> Data is formatted into the NumPy array, which indicates the present of word by setting the value 1 in the array.</li> 
+<li> The nonexistence of word in the array is set as zero.</li>
+<li>Using the tensor flow machine learning algorithm is run on the array data to categorized the data. </li>
+</lu>
+ <br>
+
+ 
+ <h2>Run model two options</h2>
+
+   
+ <h3> Option one:</h3>
+
+    <lu>
+    <li > Click on the "import button."</li>
+     <li>Select "Create new model and save model" button</li>
+     <li>It takes about 2 to  10  minutes, depending on the dataset size for the generation model.</li>
+    </lu>
+ 
+ <h3>Option two:</h3>
+ Click on "Load save model" button.
+ 
+ 
+ <h4> Click the second tab to start the conversation with the chatbot.</h4> 
+</p>
+
+
+
+
+
+<input  style="width:160;height:124; background-color:aqua"  type="button" onclick="location.href='https:/clarkec77.github.io';" value="Go  Back To HomePage" />
 
 </body>
 </html>
