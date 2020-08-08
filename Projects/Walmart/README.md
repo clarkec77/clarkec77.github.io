@@ -3,8 +3,46 @@
 <html>
 <body>
 
-<h2>Work In Progress</h2>
-<img src="images/WIP.png" alt="Trulli" width="500" height="333">
+<h2>Walmart Units Prediction </h2>
+
+
+<P> Determinie if predictive analysis of inclement weather can forcast amount of units needed online to satisified 
+    customers' demands.  R is used to examined the below datasets:
+<lu>
+<li>key.csv</li>
+<li>weather.csv</li>
+<li>features.csv</li>
+<li>train.csv</li>
+<li>stores.csv</li>
+</lu>
+    
+   
+<h3> R packages required</h3>
+
+<lu>
+    <li>library(recommenderlab)</li>
+    <li>library(reshape2)</li>
+    <li>library(ggplot2)</li>
+    <li>library(DBI)</li>
+    <li>library(RSQLite)</li>
+    <li>library(dplyr)</li>
+    <li>library(varhandle)</li>
+    <li>library(ggplot2)</li>
+    <li>library(caret)</li>
+    <li>library(skimr)</li>
+</lu>
+   </P>
+
+
+
+<h2>Sample of charts created to help examine data</h2>
+
+<img src="../images/warmart weather station.png" alt="Trulli" width="500" height="333">
+<br>
+<img src="../images/walmart snow.png" alt="Trulli" width="500" height="333">
+
+<h1></h1>
+<input  style="width:160;height:124; background-color:aqua"  type="button" onclick="location.href='https:/clarkec77.github.io';" value="Go  Back To HomePage" />
 
 </body>
 </html>
