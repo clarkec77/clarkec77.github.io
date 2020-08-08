@@ -2,20 +2,12 @@
 <body>
 
 
-
-    
-    
-    
-    
-    
-    
-    
     
     
 
 
-
-    <lu> <h3>Required R Packages</h3>
+<h3>Required Python Packages</h3>
+    <lu> 
         <li>from nltk.stem import WordNetLemmatizer</li>
         <li>lemmatizer = WordNetLemmatizer()</li>
         <li>import pickle</li>
