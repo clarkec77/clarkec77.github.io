@@ -26,14 +26,6 @@
         <li>import random</li>
         <li>from PyQt5 import QtWidgets, uic,QtCore</li>
         <li>import sys</li>
-
-        
-
-       
-        
-
-
-        
         </lu>
 
 
@@ -65,7 +57,8 @@
    
  <h3> Option one:</h3>
 
-    <lu>
+
+   <lu>
     <li > Click on the "import button."</li>
      <li>Select "Create new model and save model" button</li>
      <li>It takes about 2 to  10  minutes, depending on the dataset size for the generation model.</li>
