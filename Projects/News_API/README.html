@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<H2>Naturl Language Processing</H2>
+<h4>Word Cloud</h4>
+<img src="../images/NEWS_NLP/Word Cloud.png" alt="Trulli" width="500" height="333">
+<h4>Word Frequency</h4>
+<img src="../images/NEWS_NLP/word_bar chart.png" alt="Trulli" width="500" height="333">
+<h1></h1>
+
+<input  style="width:160;height:124; background-color:aqua"  type="button" onclick="location.href='https:/clarkec77.github.io';" value="Go  Back To HomePage" />
+
+</body>
+</html>
